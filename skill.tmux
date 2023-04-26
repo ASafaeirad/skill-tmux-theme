@@ -12,7 +12,7 @@ tmux_set() {
 
 session_icon="$(tmux_get '@tmux_power_session_icon' '')"
 TC=colour3
-FG="#626262"
+FG="white"
 BG="#272a34"
 BG2="#262626"
 BG3="#444444"
@@ -20,13 +20,18 @@ ALT="colour14"
 MUTED="#767676"
 
 function main() {
+  tmux_set status-right "#[fg=$BG,bg=white] $session_icon #S "
+  tmux_set status-left ""
+  tmux_set window-status-format "#[fg=$BG,BG=$ALT] #I #[bg=$BG2,fg=$FG] #W  "
+  tmux_set window-status-current-format "#[bg=$TC,fg=$BG,bold] #I #[bg=$BG2,fg=$TC,bold] #W  "
+
   # Status options
   tmux_set status-interval 1
   tmux_set status on
 
   # Basic status bar colors
   tmux_set status-fg "$FG"
-  tmux_set status-bg "$BG"
+  tmux_set status-bg "$BG2"
   tmux_set status-attr none
 
   # tmux-prefix-highlight
@@ -36,18 +41,11 @@ function main() {
   tmux_set @prefix_highlight_copy_mode_attr "fg=$TC,bg=$BG,bold"
 
   # Left side of status bar
-  RS="#[fg=$BG,bg=$TC] $session_icon #S "
-  tmux_set status-left "$LS"
 
   # Right side of status bar
   tmux_set status-right-bg "$BG"
   tmux_set status-right-fg "$MUTED"
   tmux_set status-right-length 150
-  tmux_set status-right "$RS"
-
-  # Window status
-  tmux_set window-status-format "#[bg=$ALT,fg=$BG] #I #[bg=$BG2,fg=$MUTED] #W  "
-  tmux_set window-status-current-format "#[bg=$TC,fg=$BG] #I #[bg=$BG2,fg=$TC] #W  #[fg=$MUTED,bg=$BG,nobold]"
 
   # Window separator
   tmux_set window-status-separator ""
